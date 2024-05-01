@@ -1,14 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {ProductType} from "../../api/types/product.type.ts";
+import { createSlice } from '@reduxjs/toolkit'
+import {addItem, removeItem, setCart, setItemQuantity} from './cart.thunk.ts'
+import { ProductType } from '../../api/types/product.type.ts'
 
 export interface CartState {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  items: { data: ProductType; quantity: number }[]
+  id?: string
+  amount: number
+  items: { product: ProductType; quantity: number }[]
   errorMessage?: string
 }
 
 const initialState: CartState = {
   loading: 'idle',
+  id: undefined,
+  amount: 0,
   items: [],
   errorMessage: undefined,
 }
@@ -16,52 +21,43 @@ const initialState: CartState = {
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {
-    addItem(state, action: PayloadAction<ProductType>) {
-      const itemId = action.payload.id
-      const existed = state.items.find((o) => o.data.id === itemId)
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(addItem.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(addItem.fulfilled, (state, action) => {
+      const items = action.payload
+      console.log(items)
+      if (!items || !items.length) return
 
-      if (existed) {
-        existed.quantity += 1
-        return
-      }
+      state.items = items
+      state.loading = 'succeeded'
+    })
+    builder.addCase(removeItem.fulfilled, (state, action) => {
+      const items = action.payload
 
-      state.items.push({
-        data: action.payload,
-        quantity: 1,
-      })
-    },
+      if (!items || !items.length) return
 
-    removeItem(state, action: PayloadAction<string>) {
-      const itemId = action.payload
-      const existed = state.items.findIndex((o) => o.data.id === itemId)
+      state.items = items
+      state.loading = 'succeeded'
+    })
+    builder.addCase(setItemQuantity.fulfilled, (state, action) => {
+      const items = action.payload
 
-      if (!~existed) return
+      if (!items || !items.length) return
 
-      if (state.items[existed].quantity <= 1) {
-        state.items.splice(existed, 1)
-        return
-      }
+      state.items = items
+      state.loading = 'succeeded'
+    })
+    builder.addCase(setCart.fulfilled, (state, action) => {
+      const cart = action.payload
 
-      state.items[existed].quantity -= 1
-    },
-
-    setAmount(state, action: PayloadAction<{ id: string; quantity: number }>) {
-      const { id: itemId, quantity } = action.payload
-      const existed = state.items.findIndex((o) => o.data.id === itemId)
-
-      if (!~existed) return
-
-      if (quantity === 0) {
-        state.items.splice(existed, 1)
-        return
-      }
-
-      state.items[existed].quantity = quantity
-    },
+      state.id = cart.id
+      state.items = cart.items
+      state.loading = 'succeeded'
+    })
   },
 })
-
-export const { addItem, removeItem, setAmount } = cartSlice.actions
 
 export default cartSlice.reducer

@@ -30,13 +30,21 @@ const converter = <T>() => ({
 
 const dataPoint = <T>(collectionPath: string) =>
   collection(firestore, collectionPath).withConverter(converter<T>())
-const datumPoint = <T>(collectionPath: string, ...paths: string[]) =>
+const docPoint = <T>(collectionPath: string, ...paths: string[]) =>
   doc(firestore, collectionPath, ...paths).withConverter(converter<T>())
 
-export default {
+const db = {
   products: dataPoint<ProductDocument>('products'),
   users: dataPoint<UserDocument>('users'),
   cart: dataPoint<CartDocument>('cart'),
-  product: (id: string) => datumPoint<ProductDocument>('products', id),
-  user: (id: string) => datumPoint<UserDocument>('users', id),
+  doc: {
+    product: (id: string) => docPoint<ProductDocument>('products', id),
+    user: (id: string) => docPoint<UserDocument>('users', id),
+    cart: (id: string) => docPoint<CartDocument>('cart', id)
+  }
 }
+
+export type DocumentReference<T extends keyof typeof db['doc']> = ReturnType<typeof db['doc'][T]>
+
+export default db;
+

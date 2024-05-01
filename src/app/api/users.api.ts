@@ -14,7 +14,7 @@ export default ({
   },
 
   async getUser(id: string) {
-    const userRef = db.user(id);
+    const userRef = db.doc.user(id);
 
     return await getDoc(userRef);
   }

@@ -28,8 +28,8 @@ export default {
     )
   },
 
-  async getSingleProduct(id: string) {
-    const productRef = db.product(id)
+  async getProduct(id: string) {
+    const productRef = db.doc.product(id)
 
     return await getDoc(productRef)
   },

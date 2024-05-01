@@ -1,14 +1,14 @@
 import {Button, Card, CardBody, Image, Input} from "@nextui-org/react";
 import {MinusIcon} from "../icons/MinusIcon.tsx";
 import {PlusIcon} from "../icons/PlusIcon.tsx";
-import {Item} from "../../app/api/types/product.type.ts";
 import {FormEvent, useCallback} from "react";
 import {useAppDispatch} from "../../hooks/useAppState.ts";
-import {addItem, removeItem, setAmount} from "../../app/features/cart/cart.slice.ts";
+import {ProductType} from "../../app/api/types/product.type.ts";
+import {addItem, removeItem, setItemQuantity} from "../../app/features/cart/cart.thunk.ts";
 
 
 export interface CartCardProps {
-  data: Item;
+  data: ProductType;
   quantity: number;
 }
 
@@ -17,15 +17,15 @@ export const CartItem = (props: CartCardProps) => {
   const dispatch = useAppDispatch()
 
   const addQuantity = useCallback(() => {
-    dispatch(addItem(props.data))
+    dispatch(addItem({ productId: props.data.id }))
   }, [props.data])
 
   const subQuantity = useCallback(() => {
-    dispatch(removeItem(props.data.id))
+    dispatch(removeItem({ productId: props.data.id }))
   }, [props.data])
 
   const setQuantity = useCallback((event: FormEvent<HTMLInputElement>) => {
-    dispatch(setAmount({ id: props.data.id, quantity: Number(event.currentTarget.value) }))
+    dispatch(setItemQuantity({ productId: props.data.id, quantity: Number(event.currentTarget.value) }))
   }, [props.data])
 
   return (

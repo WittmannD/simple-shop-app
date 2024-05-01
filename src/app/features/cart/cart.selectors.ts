@@ -13,16 +13,16 @@ export const selectCartItemsCount = createSelector(
 export const selectCartItemsTotalPrice = createSelector(
   [(state: RootState) => state.cart.items],
   items => {
-    return items.reduce((accumulator, currentValue) => accumulator + Number(currentValue.data.price * currentValue.quantity), 0)
+    return items.reduce((accumulator, currentValue) => accumulator + Number(currentValue.product.price) * currentValue.quantity, 0)
   }
 )
 
 export const selectIsProductInCart = createSelector(
   [
     (state: RootState) => state.cart.items,
-    (_state: RootState, id: number) => id,
+    (_state: RootState, id: string) => id,
   ],
   (items, id) => {
-    return Boolean(~items.findIndex(o => o.data.id === id))
+    return Boolean(~items.findIndex(o => o.product.id === id))
   }
 )

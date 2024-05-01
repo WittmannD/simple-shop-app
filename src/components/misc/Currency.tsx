@@ -8,7 +8,7 @@ import clsx from "clsx";
 export interface ICurrencyProps {
   suffix?: string
   precision?: number
-  children: number
+  children: number | string;
 }
 
 export type CurrencyProps<Component extends ElementType> =

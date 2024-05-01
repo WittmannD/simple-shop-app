@@ -2,24 +2,25 @@ import { Button, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { CartIcon } from '../icons/CartIcon.tsx'
 import { useAppDispatch, useAppSelector } from '../../hooks/useAppState.ts'
 import { useCallback } from 'react'
-import { addItem } from '../../app/features/cart/cart.slice.ts'
 import { Currency } from '../misc/Currency.tsx'
-import { Item } from '../../app/api/types/product.type.ts'
 import { selectIsProductInCart } from '../../app/features/cart/cart.selectors.ts'
 import {PlusCircleIcon} from "../icons/PlusCircleIcon.tsx";
+import {ProductType} from "../../app/api/types/product.type.ts";
+import {addItem} from "../../app/features/cart/cart.thunk.ts";
 
 export interface ItemCardProps {
-  data: Item
+  data: ProductType
 }
 
 export const ItemCard = (props: ItemCardProps) => {
+  const isLoading = useAppSelector(state => state.cart.loading === 'pending')
   const dispatch = useAppDispatch()
   const productInCart = useAppSelector((state) =>
     selectIsProductInCart(state, props.data.id)
   )
 
   const addToCart = useCallback(async () => {
-    dispatch(addItem(props.data))
+    dispatch(addItem({ productId: props.data.id }))
   }, [props.data])
 
   return (
@@ -43,6 +44,7 @@ export const ItemCard = (props: ItemCardProps) => {
           <div>
             <Button
               fullWidth={true}
+              isLoading={isLoading}
               color="primary"
               startContent={productInCart ? <PlusCircleIcon /> : <CartIcon />}
               onClick={addToCart}

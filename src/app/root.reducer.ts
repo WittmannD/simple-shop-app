@@ -1,18 +1,10 @@
-import {combineSlices} from "@reduxjs/toolkit";
-import productsReducer from "./features/products/products.slice.ts";
-import cartReducer from "./features/cart/cart.slice.ts";
-import storage from "redux-persist/lib/storage";
-import {persistReducer} from "redux-persist";
-
-const persistConfig = {
-  key: 'root',
-  whitelist: ['cart'],
-  storage,
-}
+import { combineSlices } from '@reduxjs/toolkit'
+import productsReducer from './features/products/products.slice.ts'
+import cartReducer from './features/cart/cart.slice.ts'
+import usersReducer from './features/users/users.slice.ts'
 
 export const rootReducer = combineSlices({
   products: productsReducer,
-  cart: cartReducer
+  users: usersReducer,
+  cart: cartReducer,
 })
-
-export const persistedReducer = persistReducer(persistConfig, rootReducer);

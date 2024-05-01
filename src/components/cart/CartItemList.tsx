@@ -17,9 +17,9 @@ export const CartItemList = () => {
         {items.slice(0, 6).map((item) => {
           return (
             <CartItem
-              data={item.data}
+              data={item.product}
               quantity={item.quantity}
-              key={item.data.id}
+              key={item.product.id}
             />
           )
         })}
