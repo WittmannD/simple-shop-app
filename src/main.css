@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.halftone {
+    --mask: radial-gradient(circle at center, rgb(0 0 0), rgb(0 0 0 / 0.2));
+    --stop1: 0.06rem;
+    --stop2: 0.6rem;
+    --dotColor: black;
+    --bgColor: white;
+    --bgSize: 0.6rem;
+    --invert: 1;
+    --dottedBackground: radial-gradient(circle at center, var(--dotColor) var(--stop1), transparent var(--stop2));
+
+    aspect-ratio: 1;
+    background: var(--bgColor);
+    filter: contrast(15) invert(var(--invert, 0));
+    isolation: isolate;
+
+    --borderColor: white;
+    mix-blend-mode: screen;
+}
+
+.halftone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--dottedBackground);
+    background-size: var(--bgSize, 1rem) var(--bgSize, 1rem);
+    background-repeat: round;
+    /*background-position: 0 0, var(--bgPosition) var(--bgPosition);*/
+    mask-image: var(--mask);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input.hide-controls::-webkit-outer-spin-button,
+input.hide-controls::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input.hide-controls[type=number] {
+    -moz-appearance: textfield;
+}
+
