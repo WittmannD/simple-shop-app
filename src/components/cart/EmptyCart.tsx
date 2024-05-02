@@ -1,20 +1,29 @@
 import { Button, Card, Skeleton } from '@nextui-org/react'
 import { Link } from 'react-router-dom'
 import { PlaceholderCartItem } from './PlaceholderCartItem.tsx'
+import {useSelectCartItems} from "../../hooks/useSelectCartItems.ts";
 
 export const EmptyCart = () => {
+  const { isSucceed, isLoading } = useSelectCartItems()
+
+  console.log(!isSucceed)
+
   return (
     <div className="relative">
-      <div className="absolute w-full h-full z-50 halftone" />
-      <div className="absolute w-full h-full z-50 space-y-8 flex flex-col items-center justify-center">
-        <p className="text-3xl font-bold text-center">
-          Your cart is empty. <br />
-          Go to the store page to buy our goods.
-        </p>
-        <Button color="primary" as={Link} to="/">
-          To the store page
-        </Button>
-      </div>
+      {isSucceed && (
+        <>
+          <div className="absolute w-full h-full z-50 halftone" />
+          <div className="absolute w-full h-full z-50 space-y-8 flex flex-col items-center justify-center">
+            <p className="text-3xl font-bold text-center">
+              Your cart is empty. <br />
+              Go to the store page to buy our goods.
+            </p>
+            <Button color="primary" as={Link} to="/">
+              To the store page
+            </Button>
+          </div>
+        </>
+      )}
       <div className="flex space-x-6">
         <div className="grow w-6/12">
           <div className="flex flex-col space-y-6 [&>*:nth-child(odd)]:hidden md:[&>*:nth-child(odd)]:flex">
@@ -27,19 +36,19 @@ export const EmptyCart = () => {
         </div>
         <div className="w-4/12">
           <Card className="space-y-5 p-4 border" shadow="none">
-            <Skeleton className="rounded-lg" disableAnimation>
+            <Skeleton className="rounded-lg" disableAnimation={!isLoading}>
               <div className="h-14 rounded-lg bg-default-300"></div>
             </Skeleton>
-            <Skeleton className="rounded-lg" disableAnimation>
+            <Skeleton className="rounded-lg" disableAnimation={!isLoading}>
               <div className="h-14 rounded-lg bg-default-300"></div>
             </Skeleton>
-            <Skeleton className="rounded-lg" disableAnimation>
+            <Skeleton className="rounded-lg" disableAnimation={!isLoading}>
               <div className="h-14 rounded-lg bg-default-300"></div>
             </Skeleton>
-            <Skeleton className="rounded-lg" disableAnimation>
+            <Skeleton className="rounded-lg" disableAnimation={!isLoading}>
               <div className="h-14 rounded-lg bg-default-300"></div>
             </Skeleton>
-            <Skeleton className="rounded-lg" disableAnimation>
+            <Skeleton className="rounded-lg" disableAnimation={!isLoading}>
               <div className="h-12 rounded-lg bg-default-400"></div>
             </Skeleton>
           </Card>

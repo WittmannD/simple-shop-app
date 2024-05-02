@@ -61,7 +61,7 @@ export const CartItem = (props: CartCardProps) => {
               min={0}
               variant="bordered"
               fullWidth={false}
-              classNames={{base: "w-fit", mainWrapper: "w-10", input: "hide-controls"}}
+              classNames={{base: "w-fit", input: "hide-controls"}}
               onChange={setQuantity}
               value={String(props.quantity)}
             />

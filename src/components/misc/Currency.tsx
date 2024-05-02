@@ -4,6 +4,7 @@ import {
   PolymorphicRef,
 } from '../../types/PolymorphicComponent.ts'
 import clsx from "clsx";
+import {numberWithCommas} from "../../utils/format.ts";
 
 export interface ICurrencyProps {
   suffix?: string
@@ -34,7 +35,7 @@ export const Currency: CurrencyComponent = forwardRef(
 
     return (
       <Component {...componentProps} className={clsx("font-bold", className)} ref={ref}>
-        <span>{Number(children).toFixed(precision)}</span><span>{suffix}</span>
+        <span>{numberWithCommas(Number(children).toFixed(precision))}</span><span>{suffix}</span>
       </Component>
     )
   }

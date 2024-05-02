@@ -100,8 +100,8 @@ export default ({
       return items
     }
 
-    await updateDoc(cartDocRef, { items })
     items[existedIndex].quantity = quantity
+    await updateDoc(cartDocRef, { items })
     return items
   },
 

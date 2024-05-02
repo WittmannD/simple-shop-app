@@ -10,14 +10,15 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCartItemsCount } from '../../app/features/cart/cart.selectors.ts'
 import { CartIcon } from '../icons/CartIcon.tsx'
-import {useAppSelector} from "../../hooks/useAppState.ts";
+import { useAppSelector } from '../../hooks/useAppState.ts'
+import { nFormatter } from '../../utils/format.ts'
 
 const CartButton = ({ cartItemsCount }: { cartItemsCount: number }) => {
-  const isLoading = useAppSelector(state => state.cart.loading === 'pending')
+  const isLoading = useAppSelector((state) => state.cart.loading === 'pending')
 
   return cartItemsCount ? (
     <Badge
-      content={cartItemsCount}
+      content={nFormatter(cartItemsCount)}
       color="primary"
       placement="bottom-left"
       size="lg"
