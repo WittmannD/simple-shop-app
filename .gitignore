@@ -26,3 +26,4 @@ dist-ssr
 service-account-cert.json
 .firebase
 .env*
+!.env.example
