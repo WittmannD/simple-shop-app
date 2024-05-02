@@ -13,7 +13,6 @@ export interface ItemCardProps {
 }
 
 export const ItemCard = (props: ItemCardProps) => {
-  const isLoading = useAppSelector(state => state.cart.loading === 'pending')
   const dispatch = useAppDispatch()
   const productInCart = useAppSelector((state) =>
     selectIsProductInCart(state, props.data.id)
@@ -44,7 +43,6 @@ export const ItemCard = (props: ItemCardProps) => {
           <div>
             <Button
               fullWidth={true}
-              isLoading={isLoading}
               color="primary"
               startContent={productInCart ? <PlusCircleIcon /> : <CartIcon />}
               onClick={addToCart}

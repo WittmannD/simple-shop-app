@@ -6,7 +6,7 @@ import {ProductDocument, ProductType} from "../../api/types/product.type.ts";
 export interface ProductsState {
   pagination: {
     empty: boolean,
-    lastVisible?: QueryDocumentSnapshot<Partial<ProductDocument>>
+    cursor?: QueryDocumentSnapshot<Partial<ProductDocument>>
   }
   loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   items: ProductType[]
@@ -17,7 +17,7 @@ export interface ProductsState {
 const initialState: ProductsState = {
   pagination: {
     empty: false,
-    lastVisible: undefined,
+    cursor: undefined,
   },
   loading: 'idle',
   items: [],
@@ -40,15 +40,15 @@ const productsSlice = createSlice({
 
       if (
         empty ||
-        state.pagination.lastVisible?.id === docs[docs.length - 1].id
+        state.pagination.cursor?.id === docs[docs.length - 1].id
       )
         return
 
-      state.pagination.lastVisible = docs[docs.length - 1]
+      state.pagination.cursor = docs[docs.length - 1]
 
       const items = docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Required<ProductType>[]
       state.items =
-        state.pagination.lastVisible === undefined
+        state.pagination.cursor === undefined
           ? items
           : [...state.items, ...items]
 

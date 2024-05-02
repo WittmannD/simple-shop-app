@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { ItemCard } from './ItemCard.tsx'
 import { useAppDispatch } from '../../hooks/useAppState.ts'
 import { fetchAllProducts } from '../../app/features/products/products.thunk.ts'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import { PlaceholderItemCard } from './PlaceholderItemCard.tsx'
 import { useSelectProducts } from '../../hooks/useSelectProducts.ts'
 
@@ -17,7 +17,7 @@ export const ItemCardGrid = () => {
   const fetchMore = useCallback(() => {
     if (!isLoading)
       dispatch(fetchAllProducts({ limit: 24 }))
-  }, [dispatch, pagination.lastVisible?.id])
+  }, [dispatch, pagination.cursor?.id])
 
   const hasMore = useMemo(
     () => !pagination.empty,

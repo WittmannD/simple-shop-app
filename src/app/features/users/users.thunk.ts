@@ -18,8 +18,8 @@ export const createUser = createAsyncThunk(
   }
 )
 
-export const fetchSingleUser = createAsyncThunk(
-  'users/fetchSingleUser',
+export const fetchUser = createAsyncThunk(
+  'users/fetchUser',
   async (params: FetchSingleUserParams, thunkAPI) => {
     const { id } = params
 

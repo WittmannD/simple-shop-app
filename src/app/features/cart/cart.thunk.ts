@@ -1,10 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import api from '../../api/cart.api.ts'
+import api, {unwrapCartProducts} from '../../api/cart.api.ts'
 import { RootState } from '../../store.ts'
-import { selectProductById } from '../products/products.selectors.ts'
-import productsApi from '../../api/products.api.ts'
-import { ProductType } from '../../api/types/product.type.ts'
-import { CartDocument } from '../../api/types/cart.type.ts'
 import {DocumentReference} from "../../api/firestore.ts";
 
 export interface AddItemParams {
@@ -24,24 +20,6 @@ export interface SetCartParams {
   cart: DocumentReference<'cart'>
 }
 
-const unwrapCartProducts = async (
-  state: RootState,
-  items: CartDocument['items']
-) => {
-  return await Promise.all(
-    items.map(async (item) => {
-      let product = selectProductById(state, item.product.id)
-
-      if (!product) {
-        const productDoc = await productsApi.getProduct(item.product.id)
-        product = { id: productDoc.id, ...productDoc.data() } as ProductType
-      }
-
-      return { ...item, product }
-    })
-  )
-}
-
 export const addItem = createAsyncThunk(
   'cart/addItem',
   async (params: AddItemParams, thunkAPI) => {
@@ -58,10 +36,7 @@ export const addItem = createAsyncThunk(
 
     const items = await api.addItem(cartId, productId)
 
-    const unwraped = await unwrapCartProducts(state, items)
-
-    console.log(unwraped, items)
-    return unwraped
+    return await unwrapCartProducts(state, items)
   }
 )
 
@@ -117,5 +92,13 @@ export const setCart = createAsyncThunk(
     const items = await unwrapCartProducts(state, cartDocData?.items || [])
 
     return { id: cartDoc.id, ...cartDocData, items }
+  }
+)
+
+export const emptyCart = createAsyncThunk(
+  'cart/emptyCart',
+  async (_params: void, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState
+    await api.emptyCart(state.cart.id!);
   }
 )

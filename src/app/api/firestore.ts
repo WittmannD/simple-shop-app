@@ -9,6 +9,7 @@ import {
 import { ProductDocument } from './types/product.type.ts'
 import {UserDocument} from "./types/user.type.ts";
 import {CartDocument} from "./types/cart.type.ts";
+import {OrderDocument} from "./types/order.type.ts";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyBT5BfQMkxcQN7JAz0DPDn70H_TSkGfgAA',
@@ -37,10 +38,12 @@ const db = {
   products: dataPoint<ProductDocument>('products'),
   users: dataPoint<UserDocument>('users'),
   cart: dataPoint<CartDocument>('cart'),
+  order: dataPoint<OrderDocument>('order'),
   doc: {
     product: (id: string) => docPoint<ProductDocument>('products', id),
     user: (id: string) => docPoint<UserDocument>('users', id),
-    cart: (id: string) => docPoint<CartDocument>('cart', id)
+    cart: (id: string) => docPoint<CartDocument>('cart', id),
+    order: (id: string) => docPoint<OrderDocument>('order', id)
   }
 }
 

@@ -1,5 +1,28 @@
 import { getDoc, updateDoc } from '@firebase/firestore'
 import db from './firestore';
+import {RootState} from "../store.ts";
+import {CartDocument} from "./types/cart.type.ts";
+import {selectProductById} from "../features/products/products.selectors.ts";
+import productsApi from "./products.api.ts";
+import {ProductType} from "./types/product.type.ts";
+
+export const unwrapCartProducts = async (
+  state: RootState,
+  items: CartDocument['items']
+) => {
+  return await Promise.all(
+    items.map(async (item) => {
+      let product = selectProductById(state, item.product.id)
+
+      if (!product) {
+        const productDoc = await productsApi.getProduct(item.product.id)
+        product = { id: productDoc.id, ...productDoc.data() } as ProductType
+      }
+
+      return { ...item, product }
+    })
+  )
+}
 
 export default ({
   async getCart(id: string) {
@@ -14,12 +37,8 @@ export default ({
     const cartDoc = await getDoc(cartDocRef)
     const data = cartDoc.data()
 
-    console.log('api', data)
-
     const items = data?.items ? [...data.items] : [];
     const existed = items.find((o) => o.product.id === productId)
-
-    console.log(cartDoc, items, existed)
 
     if (existed) {
       existed.quantity += 1
@@ -84,5 +103,10 @@ export default ({
     await updateDoc(cartDocRef, { items })
     items[existedIndex].quantity = quantity
     return items
+  },
+
+  async emptyCart(cartId: string) {
+    const cartDocRef = db.doc.cart(cartId);
+    await updateDoc(cartDocRef, { items: [] })
   }
 })

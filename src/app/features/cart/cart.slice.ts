@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {addItem, removeItem, setCart, setItemQuantity} from './cart.thunk.ts'
+import {addItem, emptyCart, removeItem, setCart, setItemQuantity} from './cart.thunk.ts'
 import { ProductType } from '../../api/types/product.type.ts'
 
 export interface CartState {
@@ -26,9 +26,41 @@ const cartSlice = createSlice({
     builder.addCase(addItem.pending, (state) => {
       state.loading = 'pending'
     })
+    builder.addCase(removeItem.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(setItemQuantity.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(setCart.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(emptyCart.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(addItem.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.errorMessage = String(action.payload)
+    })
+    builder.addCase(removeItem.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.errorMessage = String(action.payload)
+    })
+    builder.addCase(setItemQuantity.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.errorMessage = String(action.payload)
+    })
+    builder.addCase(setCart.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.errorMessage = String(action.payload)
+    })
+    builder.addCase(emptyCart.rejected, (state, action) => {
+      state.loading = 'failed'
+      state.errorMessage = String(action.payload)
+    })
     builder.addCase(addItem.fulfilled, (state, action) => {
       const items = action.payload
-      console.log(items)
+
       if (!items || !items.length) return
 
       state.items = items
@@ -37,7 +69,7 @@ const cartSlice = createSlice({
     builder.addCase(removeItem.fulfilled, (state, action) => {
       const items = action.payload
 
-      if (!items || !items.length) return
+      if (!items) return
 
       state.items = items
       state.loading = 'succeeded'
@@ -45,7 +77,7 @@ const cartSlice = createSlice({
     builder.addCase(setItemQuantity.fulfilled, (state, action) => {
       const items = action.payload
 
-      if (!items || !items.length) return
+      if (!items) return
 
       state.items = items
       state.loading = 'succeeded'
@@ -55,6 +87,10 @@ const cartSlice = createSlice({
 
       state.id = cart.id
       state.items = cart.items
+      state.loading = 'succeeded'
+    })
+    builder.addCase(emptyCart.fulfilled, (state) => {
+      state.items = []
       state.loading = 'succeeded'
     })
   },
