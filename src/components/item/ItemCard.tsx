@@ -38,7 +38,7 @@ export const ItemCard = (props: ItemCardProps) => {
         <div className="flex flex-col min-h-2 h-full space-y-3">
           <div className="space-y-2 mb-auto">
             <p className="font-bold text-lg">{props.data.title}</p>
-            <p className="text-default-500">{props.data.description}</p>
+            <p className="text-default-500 line-clamp-4">{props.data.description}</p>
           </div>
           <div>
             <Button

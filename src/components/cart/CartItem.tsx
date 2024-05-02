@@ -49,7 +49,7 @@ export const CartItem = (props: CartCardProps) => {
           <div className="flex col-span-5">
             <div>
               <b>{props.data.title}</b>
-              <p className="text-default-500">{props.data.description}</p>
+              <p className="text-default-500 line-clamp-[8]">{props.data.description}</p>
             </div>
           </div>
           <div className="flex items-center justify-center col-span-3 gap-2">
