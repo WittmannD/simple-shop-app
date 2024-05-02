@@ -48,7 +48,7 @@ export const OrderForm = ({ openModal }: { openModal: () => void }) => {
 
   return (
     <>
-      <Card>
+      <Card fullWidth={true}>
         <CardBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col space-y-6">

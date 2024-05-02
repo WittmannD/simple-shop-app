@@ -18,7 +18,7 @@ export const fetchAllProducts = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
 
     try {
-      return await api.getProducts(limit, state.products.pagination.lastVisible)
+      return await api.getProducts(limit, state.products.pagination.cursor)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
@@ -31,7 +31,7 @@ export const fetchSingleProduct = createAsyncThunk(
     const { id } = params
 
     try {
-      const data = await api.getSingleProduct(id)
+      const data = await api.getProduct(id)
       return { id: data.id, ...data.data() } as ProductType
     } catch (error) {
       return thunkAPI.rejectWithValue(error)

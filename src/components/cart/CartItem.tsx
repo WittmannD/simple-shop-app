@@ -35,24 +35,24 @@ export const CartItem = (props: CartCardProps) => {
       fullWidth={true}
     >
       <CardBody>
-        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
+        <div className="grid grid-cols-1 gap-y-4 gap-x-0 md:gap-x-4 md:grid-cols-12 items-center justify-center">
           <div className="relative col-span-4">
             <Image
               alt={props.data.title}
-              className="object-cover"
+              className="object-cover max-h-52 md:max-h-auto"
               shadow="md"
               src={props.data.image}
               width="100%"
             />
           </div>
 
-          <div className="flex col-span-6">
+          <div className="flex col-span-5">
             <div>
               <b>{props.data.title}</b>
               <p className="text-default-500">{props.data.description}</p>
             </div>
           </div>
-          <div className="flex items-center col-span-2 gap-2">
+          <div className="flex items-center justify-center col-span-3 gap-2">
             <Button isIconOnly aria-label="less" onClick={subQuantity}>
               <MinusIcon/>
             </Button>
@@ -60,7 +60,8 @@ export const CartItem = (props: CartCardProps) => {
               type="number"
               min={0}
               variant="bordered"
-              classNames={{mainWrapper: "min-w-10", input: "hide-controls"}}
+              fullWidth={false}
+              classNames={{base: "w-fit", mainWrapper: "w-10", input: "hide-controls"}}
               onChange={setQuantity}
               value={String(props.quantity)}
             />

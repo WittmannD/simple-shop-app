@@ -17,7 +17,7 @@ export const EmptyCart = () => {
       </div>
       <div className="flex space-x-6">
         <div className="grow w-6/12">
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col space-y-6 [&>*:nth-child(odd)]:hidden md:[&>*:nth-child(odd)]:flex">
             {Array(4)
               .fill(null)
               .map((_value, index) => (

@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 service-account-cert.json
+.env*

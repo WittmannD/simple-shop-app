@@ -15,23 +15,27 @@ export const ItemCardGrid = () => {
   }, [])
 
   const fetchMore = useCallback(() => {
-    if (!isLoading)
-      dispatch(fetchAllProducts({ limit: 24 }))
+    if (!isLoading) dispatch(fetchAllProducts({ limit: 24 }))
   }, [dispatch, pagination.cursor?.id])
 
-  const hasMore = useMemo(
-    () => !pagination.empty,
-    [products, pagination]
-  )
+  const hasMore = useMemo(() => !pagination.empty, [products, pagination])
 
   return (
     <div className="container mx-auto">
       <InfiniteScroll
-        className="gap-6 grid grid-cols-3 sm:grid-cols-4"
+        className="px-4 gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         dataLength={products.length}
         next={fetchMore}
         hasMore={hasMore} // Replace with a condition based on your data source
-        loader={<PlaceholderItemCard />}
+        loader={
+          !products.length ? (
+            Array(4)
+              .fill(null)
+              .map((_, i) => <PlaceholderItemCard key={i} />)
+          ) : (
+            <PlaceholderItemCard />
+          )
+        }
         endMessage={<p>No more data to load.</p>}
       >
         {products.map((item) => {

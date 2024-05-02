@@ -21,11 +21,11 @@ export const CheckoutPage = () => {
           {cartItemsCount < 1 ? (
             <EmptyCart />
           ) : (
-            <div className="flex space-x-6 relative">
-              <div className="grow w-6/12">
+            <div className="flex flex-col-reverse lg:flex-row space-y-reverse space-y-6 lg:space-y-0 lg:space-x-6 relative">
+              <div className="grow lg:w-6/12">
                 <CartItemList />
               </div>
-              <div className="w-4/12 sticky top-24 self-start">
+              <div className="w-full lg:w-4/12 lg:sticky lg:top-24 self-start">
                 <OrderForm openModal={onOpen} />
               </div>
             </div>
